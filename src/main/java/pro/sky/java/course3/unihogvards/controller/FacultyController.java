@@ -7,7 +7,7 @@ import pro.sky.java.course3.unihogvards.service.FacultyService;
 import java.util.List;
 
 @RestController
-@RequestMapping("faculty")
+@RequestMapping("/faculty")
 public class FacultyController {
 
     private final FacultyService facultyService;
@@ -16,7 +16,7 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping("{id}") // GET http://localhost:8080/faculty/4
+    @GetMapping("/{id}") // GET http://localhost:8080/faculty/4
     public Faculty getFacultyInfo(@PathVariable long id) {
         return facultyService.findFaculty(id);
     }
@@ -31,12 +31,12 @@ public class FacultyController {
         return facultyService.editFaculty(faculty);
     }
 
-    @DeleteMapping("{id}") // DELETE http://localhost:8080/faculty/12
+    @DeleteMapping("/{id}") // DELETE http://localhost:8080/faculty/12
     public Faculty deleteFaculty(@PathVariable long id) {
         return facultyService.deleteFaculty(id);
     }
 
-    @GetMapping({"color/{color}"}) // GET http://localhost:8080/faculty/color/4
+    @GetMapping("/color/{color}") // GET http://localhost:8080/faculty/color/4
     public List<Faculty> getStudents(@PathVariable String color) {
         return facultyService.getFacultyColor(color);
     }

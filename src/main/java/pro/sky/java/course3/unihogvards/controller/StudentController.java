@@ -7,7 +7,7 @@ import pro.sky.java.course3.unihogvards.service.StudentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("/student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -16,7 +16,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("{id}") // GET http://localhost:8080/student/24
+    @GetMapping("/{id}") // GET http://localhost:8080/student/24
     public Student getStudentInfo(@PathVariable long id) {
         return studentService.findStudent(id);
     }
@@ -31,12 +31,12 @@ public class StudentController {
         return studentService.editStudent(student);
     }
 
-    @DeleteMapping("{id}") // DELETE http://localhost:8080/student/3
+    @DeleteMapping("/{id}") // DELETE http://localhost:8080/student/3
     public Student deleteStudent(@PathVariable long id) {
         return studentService.deleteStudent(id);
     }
 
-    @GetMapping({"age/{age}"}) // GET http://localhost:8080/student/age/24
+    @GetMapping("/age/{age}") // GET http://localhost:8080/student/age/24
     public List<Student> getStudents(@PathVariable int age) {
         return studentService.getStudentbyAge(age);
     }
