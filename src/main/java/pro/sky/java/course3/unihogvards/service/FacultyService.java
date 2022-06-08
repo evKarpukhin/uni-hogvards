@@ -2,43 +2,43 @@ package pro.sky.java.course3.unihogvards.service;
 
 import pro.sky.java.course3.unihogvards.model.Faculty;
 import org.springframework.stereotype.Service;
+import pro.sky.java.course3.unihogvards.repository.FacultyRepository;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
 
-    private final Map<Long, Faculty> mapFaculties = new HashMap<>();
-    private long lastId = 0;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        mapFaculties.put(lastId, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty(long id) {
-        return mapFaculties.get(id);
+        return facultyRepository.findById(id).get();
     }
 
-    public Faculty editFaculty (Faculty faculty){
-        mapFaculties.put(faculty.getId(), faculty);
-        return faculty;
+    public Faculty editFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(long id){
-        return mapFaculties.remove(id);
+    public void deleteFaculty(long id) {
+        facultyRepository.deleteById(id);
     }
 
-    public List<Faculty> getFacultyColor(String color) {
-        List<Faculty> lsFaculties;
-        lsFaculties = mapFaculties.values().stream()
-                .filter(st -> st.getColor().equals(color))
-                .collect(Collectors.toList());
-        return lsFaculties;
+    public Collection<Faculty> getAllFaculties() {
+        return facultyRepository.findAll();
+    }
+
+
+    public List<Faculty> getFacultyByColor(String color) {
+        return facultyRepository.findByColor(color);
     }
 
 

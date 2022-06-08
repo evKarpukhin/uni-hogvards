@@ -2,42 +2,41 @@ package pro.sky.java.course3.unihogvards.service;
 
 import pro.sky.java.course3.unihogvards.model.Student;
 import org.springframework.stereotype.Service;
+import pro.sky.java.course3.unihogvards.repository.StudentRepository;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
-    private final Map<Long, Student> mapStudents = new HashMap<>();
-    private long lastId = 0;
+    private final StudentRepository studentService;
+
+    public StudentService(StudentRepository studentService) {
+        this.studentService = studentService;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        mapStudents.put(lastId, student);
-        return student;
+        return studentService.save(student);
     }
 
     public Student findStudent(long id) {
-        return mapStudents.get(id);
+        return studentService.findById(id).get();
     }
 
-    public Student editStudent (Student student){
-        mapStudents.put(student.getId(), student);
-        return student;
+    public Student editStudent(Student student) {
+        return studentService.save(student);
     }
 
-    public Student deleteStudent(long id){
-        return mapStudents.remove(id);
+    public void deleteStudent(long id) {
+        studentService.deleteById(id);
     }
 
-    public List<Student> getStudentbyAge(int age) {
-        List<Student> lsStudents;
-        lsStudents = mapStudents.values().stream()
-                .filter(st -> st.getAge() == age)
-                .collect(Collectors.toList());
-        return lsStudents;
+    public Collection<Student> getAllStudents() {
+        return studentService.findAll();
+    }
+
+    public List<Student> getStudentByAge(int age) {
+        return studentService.findByAge(age);
     }
 }
