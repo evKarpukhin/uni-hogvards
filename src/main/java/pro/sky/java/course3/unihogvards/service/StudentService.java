@@ -21,7 +21,9 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
-        return studentService.findById(id).get();
+        final Student student = studentService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Студент с " + id + " не найден !"));
+        return student; //.get();
     }
 
     public Student editStudent(Student student) {

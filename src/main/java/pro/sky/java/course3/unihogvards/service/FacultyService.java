@@ -21,7 +21,8 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Факультет с " + id + " не найден !")); //  .get();
     }
 
     public Faculty editFaculty(Faculty faculty) {
