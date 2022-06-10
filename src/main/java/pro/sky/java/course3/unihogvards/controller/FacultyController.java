@@ -20,7 +20,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}") // GET http://localhost:8080/faculty/4
-    public ResponseEntity<Faculty> getFacultyInfo(@PathVariable long id) {
+    public ResponseEntity<Faculty> getFacultyInfo(@PathVariable Long id) {
         Faculty faculty = facultyService.findFaculty(id);
         if (faculty == null) {
             return ResponseEntity.notFound().build();
@@ -33,9 +33,21 @@ public class FacultyController {
         return facultyService.createFaculty(faculty);
     }
 
-    @GetMapping("/faculties") // GET http://localhost:8080/student/all
-    public ResponseEntity<Collection<Faculty>> getAllFaculty() {
+    @GetMapping("/faculties") // GET http://localhost:8080/ffaculties
+    public ResponseEntity<Collection<Faculty>> getAllFacultyByNameOrColor(@RequestParam(required = false) String color,
+                                                                          @RequestParam(required = false) String name) {
+        if (color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.getFindByColor(color));
+        }
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(facultyService.getFindByName(name));
+        }
         return ResponseEntity.ok(facultyService.getAllFaculties());
+    }
+
+    @GetMapping("/facstudent") // GET http://localhost:8080/facstudent
+    public String getFacultyByStudentId(@RequestParam Long id) {
+        return facultyService.getFacultyByStudentId(id);
     }
 
 
@@ -45,13 +57,13 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}") // DELETE http://localhost:8080/faculty/12
-    public ResponseEntity<Faculty> deleteFaculty(@PathVariable long id) {
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/color/{color}") // GET http://localhost:8080/faculty/color/4
-    public List<Faculty> getFaculties(@PathVariable String color) {
+    public Collection<Faculty> getFaculties(@PathVariable String color) {
         return facultyService.getFacultyByColor(color);
     }
 

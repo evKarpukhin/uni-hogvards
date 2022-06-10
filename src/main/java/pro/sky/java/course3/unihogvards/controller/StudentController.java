@@ -28,9 +28,20 @@ public class StudentController {
         return ResponseEntity.ok(st);
     }
 
-    @GetMapping("/stunents") // GET http://localhost:8080/student/all
+    @GetMapping("/stunents") // GET http://localhost:8080/students
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
+    }
+
+
+    @GetMapping("/studentsfaculty")
+    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@RequestParam Long id) {
+        return ResponseEntity.ok(studentService.getStudentsByFaculty(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Collection<Student>> getStudentsBetweenAge(@RequestParam int minAge, @RequestParam int maxAge) {
+        return ResponseEntity.ok(studentService.getFindByAgeBetween(minAge, maxAge));
     }
 
     @PostMapping // POST http://localhost:8080/student
@@ -54,7 +65,7 @@ public class StudentController {
     }
 
     @GetMapping("/age/{age}") // GET http://localhost:8080/student/age/24
-    public List<Student> getStudents(@PathVariable int age) {
+    public Collection<Student> getStudents(@PathVariable int age) {
         return studentService.getStudentByAge(age);
     }
 

@@ -38,9 +38,21 @@ public class FacultyService {
     }
 
 
-    public List<Faculty> getFacultyByColor(String color) {
+    public Collection<Faculty> getFacultyByColor(String color) {
         return facultyRepository.findByColor(color);
     }
 
+
+    public Collection<Faculty> getFindByColor(String color) {
+        return facultyRepository.findAllByColorIgnoreCase(color);
+    }
+
+    public Collection<Faculty> getFindByName(String name) {
+        return facultyRepository.findAllByNameIgnoreCase(name);
+    }
+
+    public String getFacultyByStudentId(Long id){
+        return facultyRepository.findFacultyByStudentId(id);
+    }
 
 }
