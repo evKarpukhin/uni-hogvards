@@ -1,11 +1,11 @@
 package pro.sky.java.course3.unihogvards.service;
 
+import pro.sky.java.course3.unihogvards.Exception.StudentNotFoundException;
 import pro.sky.java.course3.unihogvards.model.Student;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course3.unihogvards.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class StudentService {
@@ -22,7 +22,7 @@ public class StudentService {
 
     public Student findStudent(long id) {
         final Student student = studentService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Студент с " + id + " не найден !"));
+                .orElseThrow(() -> new StudentNotFoundException("Студент с " + id + " не найден !"));
         return student; //.get();
     }
 

@@ -8,6 +8,7 @@ import pro.sky.java.course3.unihogvards.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/student")
@@ -21,11 +22,11 @@ public class StudentController {
 
     @GetMapping("/{id}") // GET http://localhost:8080/student/24
     public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
-        Student st = studentService.findStudent(id);
-        if (st == null) {
-            return ResponseEntity.notFound().build();
+        Optional<Student> student = Optional.ofNullable(studentService.findStudent(id));
+        if (student.isPresent()) {
+            return ResponseEntity.ok(student.get());
         }
-        return ResponseEntity.ok(st);
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/stunents") // GET http://localhost:8080/students

@@ -1,11 +1,11 @@
 package pro.sky.java.course3.unihogvards.service;
 
+import pro.sky.java.course3.unihogvards.Exception.FacultyNotFoundException;
 import pro.sky.java.course3.unihogvards.model.Faculty;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course3.unihogvards.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class FacultyService {
@@ -22,7 +22,7 @@ public class FacultyService {
 
     public Faculty findFaculty(long id) {
         return facultyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Факультет с " + id + " не найден !")); //  .get();
+                .orElseThrow(() -> new FacultyNotFoundException("Факультет с " + id + " не найден !")); //  .get();
     }
 
     public Faculty editFaculty(Faculty faculty) {
@@ -43,13 +43,15 @@ public class FacultyService {
     }
 
 
-    public Collection<Faculty> getFindByColor(String color) {
-        return facultyRepository.findAllByColorIgnoreCase(color);
+    public Collection<Faculty> getFindByNameOrColor(String name, String color) {
+        return facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
 
+/*
     public Collection<Faculty> getFindByName(String name) {
         return facultyRepository.findAllByNameIgnoreCase(name);
     }
+*/
 
     public String getFacultyByStudentId(Long id){
         return facultyRepository.findFacultyByStudentId(id);
