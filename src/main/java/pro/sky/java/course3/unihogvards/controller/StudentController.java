@@ -22,18 +22,15 @@ public class StudentController {
 
     @GetMapping("/{id}") // GET http://localhost:8080/student/24
     public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
-        Optional<Student> student = Optional.ofNullable(studentService.findStudent(id));
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
-        }
-        return ResponseEntity.notFound().build();
+        return Optional.ofNullable(studentService.findStudent(id))
+                .map(opt->ResponseEntity.ok(opt))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/stunents") // GET http://localhost:8080/students
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
-
 
     @GetMapping("/studentsfaculty")
     public ResponseEntity<Collection<Student>> getStudentsByFaculty(@RequestParam Long id) {
