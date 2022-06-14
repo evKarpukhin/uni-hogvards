@@ -10,43 +10,43 @@ import java.util.Collection;
 @Service
 public class StudentService {
 
-    private final StudentRepository studentService;
+    private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentService) {
-        this.studentService = studentService;
+        this.studentRepository = studentService;
     }
 
     public Student createStudent(Student student) {
-        return studentService.save(student);
+        return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-        return studentService.findById(id)
+        return studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException("Студент с " + id + " не найден !"));
     }
 
     public Student editStudent(Student student) {
-        return studentService.save(student);
+        return studentRepository.save(student);
     }
 
     public void deleteStudent(long id) {
-        studentService.deleteById(id);
+        studentRepository.deleteById(id);
     }
 
     public Collection<Student> getAllStudents() {
-        return studentService.findAll();
+        return studentRepository.findAll();
     }
 
     public Collection<Student> getStudentByAge(int age) {
-        return studentService.findByAge(age);
+        return studentRepository.findByAge(age);
     }
 
     public Collection<Student> getFindByAgeBetween(int minAge, int maxAge) {
-        return studentService.findByAgeBetween(minAge, maxAge);
+        return studentRepository.findByAgeBetween(minAge, maxAge);
     }
 
     public Collection<Student> getStudentsByFaculty(Long id) {
-        return studentService.findStudentsByFacultyId(id);
+        return studentRepository.findStudentsByFacultyId(id);
     }
 
 }
