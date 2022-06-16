@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @RestController
+@RequestMapping("/avatar")
 public class AvatarController {
 
     private final AvatarService avatarService;
@@ -33,7 +34,7 @@ public class AvatarController {
 
     @GetMapping(value = "/{id}/avatar-from-db")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
-        Avatar avatar = avatarService.findAvatar(id);
+        Avatar avatar = avatarService.findAvatarByStudentId(id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
@@ -44,7 +45,7 @@ public class AvatarController {
 
     @GetMapping(value = "/{id}/avatar-from-file")
     public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        Avatar avatar = avatarService.findAvatar(id);
+        Avatar avatar = avatarService.findAvatarByStudentId(id);
 
         Path path = Path.of(avatar.getFilePath());
 

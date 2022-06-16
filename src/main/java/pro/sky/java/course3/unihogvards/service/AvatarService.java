@@ -45,7 +45,7 @@ public class AvatarService {
         ) {
             bis.transferTo(bos);
         }
-        Avatar avatar = findAvatar(studentId);
+        Avatar avatar = findAvatarByStudentId(studentId);
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
@@ -54,8 +54,8 @@ public class AvatarService {
         avatarRepository.save(avatar);
     }
 
-    public Avatar findAvatar(Long id){
-        return avatarRepository.findById(id).orElse(new Avatar());
+    public Avatar findAvatarByStudentId(Long id){
+        return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
     private String getExtensions(String fileName) {
