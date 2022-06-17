@@ -32,7 +32,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/studentsfaculty")
+    @GetMapping("/studentsfaculty") // GET http://localhost:8080/studentsfaculty
     public ResponseEntity<Collection<Student>> getStudentsByFaculty(@RequestParam Long id) {
         return ResponseEntity.ok(studentService.getStudentsByFaculty(id));
     }
