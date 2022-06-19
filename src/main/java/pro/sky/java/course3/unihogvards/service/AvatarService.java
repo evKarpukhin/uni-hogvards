@@ -8,16 +8,13 @@ import pro.sky.java.course3.unihogvards.model.Avatar;
 import pro.sky.java.course3.unihogvards.model.Student;
 import pro.sky.java.course3.unihogvards.repository.AvatarRepository;
 
-import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
-@Transactional
 public class AvatarService {
 
     @Value("${path.to.avatars.folder}")

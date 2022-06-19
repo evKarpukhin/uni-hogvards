@@ -3,6 +3,7 @@ package pro.sky.java.course3.unihogvards;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 public class UniFacultyApplicationTests {
 
-    //@Autowired
+    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -44,8 +45,8 @@ public class UniFacultyApplicationTests {
 
         // send data to server to save
         final JSONObject facultyObject = new JSONObject();
-        facultyObject.put("color:", colorFaculty);
-        facultyObject.put("name:", nameFaculty);
+        facultyObject.put("color", colorFaculty);
+        facultyObject.put("name", nameFaculty);
         // get data from server to compare
         Faculty faculty = new Faculty();
         faculty.setId(id);
