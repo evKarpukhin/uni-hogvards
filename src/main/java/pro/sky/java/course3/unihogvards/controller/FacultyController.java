@@ -30,7 +30,7 @@ public class FacultyController {
         return facultyService.createFaculty(faculty);
     }
 
-    @GetMapping("/faculties") // GET http://localhost:8080/ffaculties
+    @GetMapping("/faculties") // GET http://localhost:8080/faculties
     public ResponseEntity<Collection<Faculty>> getAllFacultyByNameOrColor(@RequestParam(required = false)
                                                                                   String searchNameOrColor) {
         if (searchNameOrColor != null) {
