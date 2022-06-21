@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pro.sky.java.course3.unihogvards.controller.FacultyController;
@@ -18,12 +17,12 @@ import pro.sky.java.course3.unihogvards.service.FacultyService;
 
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = FacultyController.class)
 public class UniFacultyApplicationTests {
@@ -41,7 +40,7 @@ public class UniFacultyApplicationTests {
     private FacultyController facultyController;
 
     @Test
-    public void saveFacultyTest() throws Exception {
+    public void allFacultyTest() throws Exception {
         final String nameFaculty = "B2";
         final String colorFaculty = "Yellow";
         final long id = 1L;
@@ -63,8 +62,7 @@ public class UniFacultyApplicationTests {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
         when(facultyRepository.findByColor(faculty.getColor())).thenReturn(Set.of(faculty));
         when(facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(any(String.class), any(String.class))).thenReturn(Set.of(faculty));
-        when(facultyRepository.findFacultyByStudentId(any(Long.class))).thenReturn(nameFaculty);
-        //when(facultyRepository..deleteById(faculty.getId())).thenReturn(faculty);
+        when(facultyRepository.findFacultyByStudentId(id)).thenReturn(nameFaculty);
 
         // OK
         mockMvc.perform(MockMvcRequestBuilders
@@ -77,34 +75,29 @@ public class UniFacultyApplicationTests {
                 .andExpect(jsonPath("$.name").value(nameFaculty))
                 .andExpect(jsonPath("$.color").value(colorFaculty));
 
-        // Fails
+        // Ok
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty/color/" + colorFaculty)
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) //receive
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(nameFaculty))
-                .andExpect(jsonPath("$.color").value(colorFaculty));
+                .andExpect(jsonPath("$[0].id").value(id))
+                .andExpect(jsonPath("$[0].name").value(nameFaculty))
+                .andExpect(jsonPath("$[0].color").value(colorFaculty));
 
-        // Fails
+        // Ok
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/facstudent/")
-                        .accept(MediaType.APPLICATION_JSON))
+                        .get("/faculty/facstudent/?id="+id))
                 .andExpect(status().isOk()) //receive
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(nameFaculty))
-                .andExpect(jsonPath("$.color").value(colorFaculty));
+                .andExpect(content().string(containsString(nameFaculty)));
 
-        // Fails
+        // Ok
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/faculty/" + id)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()) //receive
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(nameFaculty))
-                .andExpect(jsonPath("$.color").value(colorFaculty));
+                .andExpect(status().isOk()); //receive
+
 
     }
 

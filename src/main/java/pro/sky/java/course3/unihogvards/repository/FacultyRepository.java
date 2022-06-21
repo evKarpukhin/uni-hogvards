@@ -16,4 +16,5 @@ public interface FacultyRepository extends JpaRepository<Faculty, Long> {
 
     @Query("select fc.name from Faculty as fc, Student as st where fc.id = st.faculty.id and st.id = ?1")
     String findFacultyByStudentId(Long idStudent);
+
 }
