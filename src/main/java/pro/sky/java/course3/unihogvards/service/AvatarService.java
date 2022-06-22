@@ -2,6 +2,8 @@ package pro.sky.java.course3.unihogvards.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.java.course3.unihogvards.model.Avatar;
@@ -11,6 +13,7 @@ import pro.sky.java.course3.unihogvards.repository.AvatarRepository;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -59,5 +62,9 @@ public class AvatarService {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
+    public List<Avatar> getAllAvatars(Integer pageNo, Integer pageSize){
+        Pageable paging = PageRequest.of(pageNo-1, pageSize);
+        return avatarRepository.findAll(paging).getContent();
+    }
 
 }
