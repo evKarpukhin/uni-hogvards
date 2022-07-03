@@ -1,5 +1,7 @@
 package pro.sky.java.course3.unihogvards.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,8 @@ public class AvatarService {
         this.avatarRepository = avatarRepository;
     }
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentService.findStudent(studentId);
 
@@ -52,9 +56,11 @@ public class AvatarService {
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setData(avatarFile.getBytes());
         avatarRepository.save(avatar);
+        logger.info("Was invoked method for upload avatar");
     }
 
-    public Avatar findAvatarByStudentId(Long id){
+    public Avatar findAvatarByStudentId(Long id) {
+        logger.info("Was invoked method for find avatar by student id");
         return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
@@ -62,8 +68,9 @@ public class AvatarService {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public List<Avatar> getAllAvatars(Integer pageNo, Integer pageSize){
-        Pageable paging = PageRequest.of(pageNo-1, pageSize);
+    public List<Avatar> getAllAvatars(Integer pageNo, Integer pageSize) {
+        logger.info("Was invoked method for get all avatars");
+        Pageable paging = PageRequest.of(pageNo - 1, pageSize);
         return avatarRepository.findAll(paging).getContent();
     }
 
