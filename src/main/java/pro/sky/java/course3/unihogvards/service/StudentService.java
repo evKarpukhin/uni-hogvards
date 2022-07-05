@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import pro.sky.java.course3.unihogvards.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -29,9 +33,10 @@ public class StudentService {
         logger.info("Was invoked method for find student");
         return studentRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.error("There is not student with id = {}", id);
-                    new StudentNotFoundException("Студент с " + id + " не найден !");
-                return null;}
+                            logger.error("There is not student with id = {}", id);
+                            new StudentNotFoundException("Студент с " + id + " не найден !");
+                            return null;
+                        }
                 );
     }
 
@@ -78,6 +83,21 @@ public class StudentService {
     public Collection<Student> getLast5Students() {
         logger.info("Was invoked method for get last 5 students");
         return studentRepository.find5LastStudents();
+    }
+
+    public Collection<String> gelAllStudentsA() {
+        logger.info("Was invoked method for get all students");
+        return studentRepository.findAll().stream()
+                        .map(n -> n.getName().toUpperCase(Locale.ROOT))
+                        .filter(s -> s.startsWith("А"))
+                        .sorted()
+                        .collect(Collectors.toList());
+    }
+
+    public Double getAverageAgeStudents() {
+        logger.info("Was invoked method for Average Age Students");
+        return studentRepository.findAll().stream()
+                .collect(Collectors.averagingDouble(n -> n.getAge()));
     }
 
 

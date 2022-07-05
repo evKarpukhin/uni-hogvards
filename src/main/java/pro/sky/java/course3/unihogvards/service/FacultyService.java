@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pro.sky.java.course3.unihogvards.repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
@@ -72,4 +73,19 @@ public class FacultyService {
         return facultyRepository.findFacultyByStudentId(id);
     }
 
+    public String getMaxNameFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(s -> s.getName())
+                .max((s1, s2) -> s1.length() - s2.length())
+                .get();
+    }
+
+    public Integer getMinTime() { //1784293664 / 1784293664 / 1784293664
+        int sum = Stream
+                .iterate(1, a -> a + 1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+        return sum;
+    }
 }

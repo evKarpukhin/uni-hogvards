@@ -23,8 +23,18 @@ public class StudentController {
     @GetMapping("/{id}") // GET http://localhost:8080/student/24
     public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
         return Optional.ofNullable(studentService.findStudent(id))
-                .map(opt->ResponseEntity.ok(opt))
+                .map(opt -> ResponseEntity.ok(opt))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/alla") // GET http://localhost:8080/student/alla
+    public Collection<String> getAllStudentsA() {
+        return studentService.gelAllStudentsA();
+    }
+
+    @GetMapping("/strimavgage") // GET http://localhost:8080/student/avgage
+    public double getAverageAge() {
+        return studentService.getAverageAgeStudents();
     }
 
     @GetMapping("/stunents") // GET http://localhost:8080/students
@@ -68,20 +78,19 @@ public class StudentController {
     }
 
     @GetMapping("/count") // GET http://localhost:8080/student/count
-    public Integer getCountStudents(){
+    public Integer getCountStudents() {
         return studentService.getCountStudents();
     }
 
     @GetMapping("/avgage") // GET http://localhost:8080/student/avgage
-    public Double getAvgAgeStudents(){
+    public Double getAvgAgeStudents() {
         return studentService.getAvgAgeStudents();
     }
 
-    @GetMapping("/laststudents") // GET http://localhost:8080/last5students
+    @GetMapping("/laststudents") // GET http://localhost:8080/student/last5students
     public ResponseEntity<Collection<Student>> getLast5Students() {
         Collection<Student> collection = studentService.getLast5Students();
         return ResponseEntity.ok(collection);
     }
-
 
 }

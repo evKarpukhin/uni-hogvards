@@ -14,7 +14,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Student findById(int id);
 
-    Collection<Student> findByAgeBetween (int minAge, int maxAge);
+    Collection<Student> findByAgeBetween(int minAge, int maxAge);
 
     Collection<Student> findStudentsByFacultyId(Long id);
 
@@ -24,7 +24,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT AVG(age) FROM STUDENT", nativeQuery = true)
     Double avgAgeStudents();
 
-//    @Query(value = "SELECT S. FROM STUDENT S order by id DESC LIMIT 5", nativeQuery = true)
+    //    @Query(value = "SELECT S. FROM STUDENT S order by id DESC LIMIT 5", nativeQuery = true)
 //    @Query(value = "SELECT S.to_json FROM STUDENT S order by id DESC LIMIT 5", nativeQuery = true)
     @Query(value = "SELECT S.id, S.name, S.age, S.faculty_id FROM STUDENT S order by id DESC LIMIT 5", nativeQuery = true)
     Collection<Student> find5LastStudents();

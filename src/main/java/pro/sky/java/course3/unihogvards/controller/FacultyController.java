@@ -61,4 +61,15 @@ public class FacultyController {
         return facultyService.getFacultyByColor(color);
     }
 
+    @GetMapping("/maxname") // GET http://localhost:8080/faculty/maxname
+    public String getMaxNameFaculty() {
+        return facultyService.getMaxNameFaculty();
+    }
+
+    @GetMapping("/mintime") // GET http://localhost:8080/faculty/mintime
+    public Integer reduceTime() {
+        return facultyService.getMinTime();
+    }
+
+
 }
