@@ -88,10 +88,10 @@ public class StudentService {
     public Collection<String> gelAllStudentsA() {
         logger.info("Was invoked method for get all students");
         return studentRepository.findAll().stream()
-                        .map(n -> n.getName().toUpperCase(Locale.ROOT))
-                        .filter(s -> s.startsWith("А"))
-                        .sorted()
-                        .collect(Collectors.toList());
+                .map(n -> n.getName().toUpperCase(Locale.ROOT))
+                .filter(s -> s.startsWith("А"))
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     public Double getAverageAgeStudents() {
@@ -100,5 +100,8 @@ public class StudentService {
                 .collect(Collectors.averagingDouble(n -> n.getAge()));
     }
 
+    public synchronized void outputName(String std) {
+        System.out.println(std);
+    }
 
 }
