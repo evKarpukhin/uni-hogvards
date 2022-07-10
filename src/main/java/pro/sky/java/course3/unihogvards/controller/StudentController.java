@@ -18,8 +18,6 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    private final Object flag = new Object();
-
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
@@ -47,68 +45,14 @@ public class StudentController {
     }
 
     @GetMapping("/stdsinthreadunsinchon") // GET http://localhost:8080/stdsinthreadunsinchon
-    public Collection<Student> getStudentsInThreadUnsynchronized() {
-        Collection<Student> colStd = studentService.getAllStudents();
-        if (!colStd.isEmpty() && (colStd.size() >= 6)) {
-            List<String> arrayStd = colStd.stream()
-                    .map((std) -> std.getName())
-                    .toList();
-
-            System.out.println(arrayStd.get(0));
-            System.out.println(arrayStd.get(1));
-
-            // Thread 1
-            Thread thread1 = new Thread(() -> {
-                System.out.println(arrayStd.get(2));
-                System.out.println(arrayStd.get(3));
-            });
-
-            // Thread 2
-            Thread thread2 = new Thread(() -> {
-                System.out.println(arrayStd.get(4));
-                System.out.println(arrayStd.get(5));
-            });
-
-            thread1.start();
-            thread2.start();
-        }
-        return studentService.getAllStudents();
+    public void getStudentsInThreadUnsynchronized() {
+        studentService.getStdUnSynchronized();
     }
-
 
     @GetMapping("/stdsinthreadonsinchon") // GET http://localhost:8080/stdsinthreadonsinchon
-    public Collection<Student> getStudentsInThreadOnSynchronized() {
-        Collection<Student> colStd = studentService.getAllStudents();
-        if (!colStd.isEmpty() && (colStd.size() >= 6)) {
-            List<String> arrayStd = colStd.stream()
-                    .map((std) -> std.getName())
-                    .toList();
-
-            System.out.println(arrayStd.get(0));
-            System.out.println(arrayStd.get(1));
-
-            // Thread 1
-            Thread thread1 = new Thread(() -> {
-                synchronized (flag) {
-                    studentService.outputName(arrayStd.get(2));
-                    studentService.outputName(arrayStd.get(3));
-                }
-            });
-
-            // Thread 2
-            Thread thread2 = new Thread(() -> {
-                synchronized (flag) {
-                    studentService.outputName(arrayStd.get(4));
-                    studentService.outputName(arrayStd.get(5));
-                }
-            });
-
-            thread1.start();
-            thread2.start();
-        }
-        return studentService.getAllStudents();
+    public void getStudentsInThreadOnSynchronized() {
+        studentService.getStdOnSynchronized();
     }
-
 
     @GetMapping("/studentsfaculty") // GET http://localhost:8080/studentsfaculty
     public ResponseEntity<Collection<Student>> getStudentsByFaculty(@RequestParam Long id) {

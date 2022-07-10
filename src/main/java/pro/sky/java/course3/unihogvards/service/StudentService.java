@@ -20,6 +20,8 @@ public class StudentService {
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
 
+    private final Object flag = new Object();
+
     public StudentService(StudentRepository studentService) {
         this.studentRepository = studentService;
     }
@@ -100,8 +102,66 @@ public class StudentService {
                 .collect(Collectors.averagingDouble(n -> n.getAge()));
     }
 
-    public synchronized void outputName(String std) {
+    public void outputName(String std) {
         System.out.println(std);
+    }
+
+    public void getStdOnSynchronized() {
+        Collection<Student> colStd = getAllStudents();
+        if (!colStd.isEmpty() && (colStd.size() >= 6)) {
+            List<String> arrayStd = colStd.stream()
+                    .map((std) -> std.getName())
+                    .toList();
+
+            System.out.println(arrayStd.get(0));
+            System.out.println(arrayStd.get(1));
+
+            // Thread 1
+            Thread thread1 = new Thread(() -> {
+                synchronized (flag) {
+                    outputName(arrayStd.get(2));
+                    outputName(arrayStd.get(3));
+                }
+            });
+
+            // Thread 2
+            Thread thread2 = new Thread(() -> {
+                synchronized (flag) {
+                    outputName(arrayStd.get(4));
+                    outputName(arrayStd.get(5));
+                }
+            });
+
+            thread1.start();
+            thread2.start();
+        }
+    }
+
+    public void getStdUnSynchronized() {
+        Collection<Student> colStd = getAllStudents();
+        if (!colStd.isEmpty() && (colStd.size() >= 6)) {
+            List<String> arrayStd = colStd.stream()
+                    .map((std) -> std.getName())
+                    .toList();
+
+            System.out.println(arrayStd.get(0));
+            System.out.println(arrayStd.get(1));
+
+            // Thread 1
+            Thread thread1 = new Thread(() -> {
+                System.out.println(arrayStd.get(2));
+                System.out.println(arrayStd.get(3));
+            });
+
+            // Thread 2
+            Thread thread2 = new Thread(() -> {
+                System.out.println(arrayStd.get(4));
+                System.out.println(arrayStd.get(5));
+            });
+
+            thread1.start();
+            thread2.start();
+        }
     }
 
 }
